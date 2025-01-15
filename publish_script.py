@@ -26,10 +26,10 @@ def md_to_devto(md_file):
 
     article_json = {
         "article": {
-            "title": title,
+            "title": front_matter_data['title'],
             "published": True,
-            "body_markdown": md_content,
-            "tags": tags
+            "body_markdown": body_markdown,
+            "tags": front_matter_data['tags']
         }
 
     }

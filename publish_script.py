@@ -12,7 +12,7 @@ def extract_front_matter(md_file):
         front_matter = front_matter_match.group(1)
         # Load YAML front matter
         front_matter_data = yaml.safe_load(front_matter)
-        body_markdown = content[len(front_matter_match.group(0)) + 2:].strip()
+        body_markdown = content[len(front_matter_match.group(0)) + 3:].strip()
         return front_matter_data, body_markdown
     else:
         raise ValueError("No front matter found in markdown file")
@@ -29,7 +29,8 @@ def md_to_devto(md_file):
             "title": front_matter_data['title'],
             "published": True,
             "body_markdown": body_markdown,
-            "tags": front_matter_data['tags']
+            "tags": front_matter_data['tags'],
+            "published" : front_matter_data['published']
         }
 
     }

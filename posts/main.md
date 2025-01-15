@@ -28,13 +28,13 @@ I did some quick research and decided to use this [Publish to dev.to](https://gi
 
 First, fetch your DEV.TO API key. For this, log in to your DEV.TO account and go to settings/extensions, scroll all the way to the bottom and in you will see a section Named "DEV Community API Keys". Name your project and click on "Generate API Key". Copy this key and save it in your GitHub repository secrets.
 
-![Dev.to API Key](./Screenshot-2025-01-13-3.png)
+![Dev.to API Key](images/Screenshot-2025-01-13-3.png)
 
 To save the key as a secret. go to your repository settings, click on secrets, and add a new secret with the name `DEVTO_TOKEN` and paste the key you copied from DEV.TO.'
 
-![Repository Settings](./Screenshot-2025-01-13.png)
+![Repository Settings](images/Screenshot-2025-01-13.png)
 
-![Add Secret](./Screenshot-2025-01-13-2.png)
+![Add Secret](images/Screenshot-2025-01-13-2.png)
 
 In your repository, create a new file called `.github/workflows/devto.yml` and add the following code that you can [find also at the action landing page in the GitHub marketplace.](https://github.com/marketplace/actions/publish-to-dev-to)
 

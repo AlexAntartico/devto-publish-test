@@ -35,7 +35,7 @@ jobs:
         DEVTO_API_KEY: ${{ secrets.DEVTO_TOKEN }}
       run: |
         curl -X POST "https://dev.to/api/articles" \
-        -H "api-key: $DEVTO_TOKEN" \
+        -H "api-key: $DEVTO_API_KEY" \
         -H "Content-Type: application/json" \
         -d @formatted_article.json
 

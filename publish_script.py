@@ -18,7 +18,7 @@ def extract_front_matter(md_file):
         raise ValueError("No front matter found in markdown file")
 
 def md_to_devto(md_file):
-    fron_matter_data, body_markdown = extract_front_matter(md_file)
+    front_matter_data, body_markdown = extract_front_matter(md_file)
 
     if 'title' not in front_matter_data or 'tags' not in front_matter_data:
         # Is there a better way to not repeat double not in?

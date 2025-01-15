@@ -3,8 +3,8 @@ title: "How to upload Markdown files to Dev.to from GitHub"
 description: "A short article on how to upload Markdown files from GitHub to Dev.to"
 tags:
   - github
-  - github-actions
-  - dev.to
+  - actions
+  - devto
   - automation
 published: true
 ---

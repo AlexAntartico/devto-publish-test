@@ -1,7 +1,7 @@
 import json
 import re
 import yaml
-
+import requests
 
 def extract_front_matter(md_file):
     with open(md_file, 'r') as f:

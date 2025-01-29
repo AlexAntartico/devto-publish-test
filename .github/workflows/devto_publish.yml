@@ -41,15 +41,15 @@ jobs:
       env:
         DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
       run: |
-        # Debug: Print the JSON structure (excluding sensitive data)
         echo "Action value:"
         jq -r '.action' formatted_article.json
         
         echo "Article structure:"
-        jq '.article' formatted_article.json | jq 'del(.body_markdown)'
+        jq '.article.article' formatted_article.json | jq 'del(.body_markdown)'
         
         action=$(jq -r '.action' formatted_article.json)
-        article_data=$(jq '.article' formatted_article.json)
+        article_data=$(jq '.article.article' formatted_article.json)
+        article_id=$(jq -r '.article.article.id' formatted_article.json)
         
         if [ "$action" = "create" ]; then
           echo "Attempting to create article..."
@@ -59,7 +59,6 @@ jobs:
             -d "{\"article\": $article_data}" \
             -w "\n%{http_code}")
         elif [ "$action" = "update" ]; then
-          article_id=$(echo "$article_data" | jq -r '.id')
           echo "Attempting to update article with ID: $article_id"
           response=$(curl -X PUT "https://dev.to/api/articles/$article_id" \
             -H "api-key: $DEVTO_API_KEY" \

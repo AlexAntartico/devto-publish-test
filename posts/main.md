@@ -137,6 +137,7 @@ I have explained what the action does and how it works.
 TO DO: 
 - explain the python script and how to set up env variables.
 - fix broken image links in devto (they are working in github)
+- modify explanation
 
 To finalize this article, commit and push the changes to your repository, the action will run automatically and if everything is set up correctly; you will see your markdown file uploaded to DEV.TO.
 

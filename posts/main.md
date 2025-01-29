@@ -139,7 +139,9 @@ This Python script handles the conversion and publishing of markdown files to De
 2. Handles errors for:
   - Missing files
   - Invalid YAML parsing1
+
 **md_to_devto Function**
+
 3. Accepts:
   - Markdown file path
   - Dev.to API key
@@ -151,7 +153,9 @@ This Python script handles the conversion and publishing of markdown files to De
   - Validates required fields (title, tags)
   - Checks for existing articles
   - Prepares article JSON with title, published status, content, and tags1
+
 **fetch_existing_articles Function**
+
 5. Takes API key as input
   - Returns list of existing articles from Dev.to
   - Raises HTTP errors for failed requests1

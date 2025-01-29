@@ -127,7 +127,7 @@ So far, you have:
 We now have to write the python script that will convert the markdown file to the DEV.TO format. You can find the script [here](https://github.com/AlexAntartico/devto-publish-test/blob/main/publish_script.py).
 
 I have explained what the action does and how it works.
-TO DO: explain the python script
+TO DO: explain the python script and how to set up env variables.
 
 To finalize, commit and push the changes to your repository, the action will run automatically and if everything is set up correctly; you will see your markdown file uploaded to DEV.TO.
 

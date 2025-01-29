@@ -15,7 +15,9 @@ def extract_front_matter(md_file):
         body_markdown = content[len(front_matter_match.group(0)) + 3:].strip()
         return front_matter_data, body_markdown
     else:
-        raise ValueError("No front matter found in markdown file")
+        front_matter_data = {}
+        body_markdown = content.strip()
+    return front_matter_data, body_markdown[2]
 
 def md_to_devto(md_file):
     front_matter_data, body_markdown = extract_front_matter(md_file)
@@ -27,12 +29,10 @@ def md_to_devto(md_file):
     article_json = {
         "article": {
             "title": front_matter_data['title'],
-            "published": True,
             "body_markdown": body_markdown,
             "tags": front_matter_data['tags'],
-            "published" : front_matter_data['published']
+            "published": front_matter_data['published']
         }
-
     }
 
     return json.dumps(article_json)

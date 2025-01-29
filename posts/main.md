@@ -17,7 +17,7 @@ You can do this with:
 - GitHub actions
 - Dev.to API Token
 - A custom GitHub action
-- A simple python script
+- A Python script
 
 I am assuming you have a general knowledge with GitHub actions and Python scripting, but you can achieve this with a superficial knowledge. To know more about it, you can check the [GitHub documentation](https://docs.github.com/en/actions).
 

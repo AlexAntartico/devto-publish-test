@@ -4,22 +4,20 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
+    paths:
+      - 'posts/**'
 
 jobs:
   publish:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
-        python-version: '3.10.13'
+        python-version: '3.11'
 
     - name: Upgrade pip and Install dependencies
       run: |
@@ -34,8 +32,13 @@ jobs:
       env:
         DEVTO_API_KEY: ${{ secrets.DEVTO_TOKEN }}
       run: |
-        curl -X POST "https://dev.to/api/articles" \
+        response=$(curl -X POST "https://dev.to/api/articles" \
         -H "api-key: $DEVTO_API_KEY" \
         -H "Content-Type: application/json" \
-        -d @formatted_article.json
+        -d @formatted_article.json -w \\n%{http_code})
+      status_code=$(echo "$response" | tail -n1)
+      if [ "$status_code" -ne 201 ]; then
+        echo "Failed to publish article. Status code: $status_code"
+        exit 1
+      fi
 

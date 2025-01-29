@@ -4,6 +4,10 @@ import yaml
 import sys
 
 def extract_front_matter(md_file):
+    '''
+    Extracts front matter from a markdown file
+    Returns a tuple of front matter data and the body markdown
+    '''
     with open(md_file, 'r') as f:
         content = f.read()
 
@@ -20,6 +24,9 @@ def extract_front_matter(md_file):
     return front_matter_data, body_markdown[2]
 
 def md_to_devto(md_file):
+    '''
+    Converts a markdown file to the format expected by the dev.to API
+    '''
     front_matter_data, body_markdown = extract_front_matter(md_file)
 
     if 'title' not in front_matter_data or 'tags' not in front_matter_data:
@@ -39,6 +46,9 @@ def md_to_devto(md_file):
 
 
 if __name__ == "__main__":
+    '''
+    Will verify if arguments passed are correct and call the md_to_devto function
+    '''
     if len(sys.argv) != 2:
         print("Usage: python publish_script.py <path_to_markdown_file>")
         sys.exit(1)

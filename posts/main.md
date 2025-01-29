@@ -66,13 +66,20 @@ jobs:
         python -m pip install --upgrade pip
         pip install pyyaml requests
 
+    - name: Verify API Key Availability
+      env:
+        DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}  # Keep existing secret mapping
+      run: |
+        echo "API key character count: ${#DEVTO_API_KEY}"
+        echo "API key empty check: $([ -z "$DEVTO_API_KEY" ] && echo 'Empty' || echo 'Set')"
+
     - name: Convert md to Dev.to format
       run: |
         python publish_script.py ./posts/main.md > formatted_article.json
 
     - name: Publish or Update to Dev.to
       env:
-        DEVTO_API_KEY: ${{ secrets.DEVTO_TOKEN }}
+        DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
       run: |
         action=$(jq -r '.action' formatted_article.json)
         article=$(jq -r '.article' formatted_article.json)
@@ -92,7 +99,7 @@ jobs:
           echo "Invalid action: $action"
           exit 1
         fi
-
+          
         status_code=$(echo "$response" | tail -n1)
         if [ "$status_code" -ne 200 ] && [ "$status_code" -ne 201 ]; then
           echo "Failed to update article. Status code: $status_code"

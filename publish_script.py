@@ -1,7 +1,7 @@
 import json
 import re
 import yaml
-import requests
+import sys
 
 def extract_front_matter(md_file):
     with open(md_file, 'r') as f:
@@ -39,7 +39,16 @@ def md_to_devto(md_file):
 
 
 if __name__ == "__main__":
-    md_file = "posts/main.md"
-    formatted_article = md_to_devto(md_file)
-    print(formatted_article)
+    if len(sys.argv) != 2:
+        print("Usage: python publish_script.py <path_to_markdown_file>")
+        sys.exit(1)
+
+    md_file = sys.argv[1]
+    try:
+        formatted_article = md_to_devto(md_file)
+        print(formatted_article)
+    except Exception as e:
+        print(f"Error: {str(e)}", file=sys.stderr)
+        sys.exit(1)
+
 

@@ -99,7 +99,7 @@ jobs:
           echo "Invalid action: $action"
           exit 1
         fi
-          
+
         status_code=$(echo "$response" | tail -n1)
         if [ "$status_code" -ne 200 ] && [ "$status_code" -ne 201 ]; then
           echo "Failed to update article. Status code: $status_code"
@@ -136,7 +136,7 @@ We now have to write the python script that will convert the markdown file to th
 I have explained what the action does and how it works.
 TO DO: explain the python script and how to set up env variables.
 
-To finalize, commit and push the changes to your repository, the action will run automatically and if everything is set up correctly; you will see your markdown file uploaded to DEV.TO.
+To finalize this article, commit and push the changes to your repository, the action will run automatically and if everything is set up correctly; you will see your markdown file uploaded to DEV.TO.
 
 Cheers and happy coding!
 

@@ -28,17 +28,32 @@ jobs:
       run: |
         python publish_script.py ./posts/main.md > formatted_article.json
 
-    - name: Publish to Dev.to
+    - name: Publish or Update to Dev.to
       env:
         DEVTO_API_KEY: ${{ secrets.DEVTO_TOKEN }}
       run: |
-        response=$(curl -X POST "https://dev.to/api/articles" \
-        -H "api-key: $DEVTO_API_KEY" \
-        -H "Content-Type: application/json" \
-        -d @formatted_article.json -w \\n%{http_code})
-      status_code=$(echo "$response" | tail -n1)
-      if [ "$status_code" -ne 201 ]; then
-        echo "Failed to publish article. Status code: $status_code"
-        exit 1
-      fi
+        action=$(jq -r '.action' formatted_article.json)
+        article=$(jq -r '.article' formatted_article.json)
+
+        if [ "$action" = "create" ]; then
+          response=$(curl -X POST "https://dev.to/api/articles" \
+            -H "api-key: $DEVTO_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "$article" -w "\n%{http_code}")
+        elif [ "$action" = "update" ]; then
+          article_id=$(echo $article | jq -r '.id')
+          response=$(curl -X PUT "https://dev.to/api/articles/$article_id" \
+            -H "api-key: $DEVTO_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "$article" -w "\n%{http_code}")
+        else
+          echo "Invalid action: $action"
+          exit 1
+        fi
+          
+        status_code=$(echo "$response" | tail -n1)
+        if [ "$status_code" -ne 200 ] && [ "$status_code" -ne 201 ]; then
+          echo "Failed to update article. Status code: $status_code"
+          exit 1
+        fi
 

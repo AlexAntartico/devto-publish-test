@@ -31,7 +31,7 @@ First, fetch your DEV.TO API key. For this, log in to your DEV.TO account and go
 
 ![Dev.to API Key](../images/Screenshot-2025-01-13-3.png)
 
-To save the key as a secret. go to your repository settings, click on secrets, and add a new secret with the name `DEVTO_TOKEN` and paste the key you copied from DEV.TO.'
+To save the key as a secret. go to your repository settings, click on secrets, and add a new secret with the name `DEVTO_TOKEN` and paste the key you copied from DEV.TO. Ensure you have saved at repository level.
 
 ![Repository Settings](../images/Screenshot-2025-01-13.png)
 

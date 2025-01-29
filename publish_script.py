@@ -18,6 +18,7 @@ import re
 import yaml
 import requests
 import sys
+import os
 
 
 def extract_front_matter(md_file):

@@ -122,10 +122,10 @@ if __name__ == "__main__":
         sys.exit(1)
 
     md_file = sys.argv[1]
-    api_key = os.environ.get('DEVTO_TOKEN')
+    api_key = os.environ.get('DEVTO_API_KEY')
 
     if not api_key:
-        print("Please set the DEVTO_TOKEN environment variable with your dev.to API key.", file=sys.stderr)
+        print("Please set the DEVTO_API_KEY environment variable with your dev.to API key.", file=sys.stderr)
         sys.exit(1)
 
     try:

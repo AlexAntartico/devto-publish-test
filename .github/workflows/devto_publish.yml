@@ -32,6 +32,8 @@ jobs:
         echo "API key empty check: $([ -z "$DEVTO_API_KEY" ] && echo 'Empty' || echo 'Set')"
 
     - name: Convert md to Dev.to format
+      env:
+        DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
       run: |
         python publish_script.py ./posts/main.md > formatted_article.json
 

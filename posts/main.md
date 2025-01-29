@@ -109,37 +109,65 @@ jobs:
 
 ## Brief explanation of GitHub action
 
-1. Trigger: The action will run every time you push a commit to the main branch and only if the changes are in the `posts` directory.
-2. Jobs: The action has only one job called `publish`. This job will run on the latest Ubuntu environment available.
-3. Steps: The job has several steps that will be executed in order.
-  a. Checkout repository: This step will checkout the repository to the runner.
-  b. Set up Python: This step will set up Python on the runner.
-  c. Upgrade pip and Install dependencies: This step will upgrade pip and install the dependencies needed to run the python script.
-  d. Convert md to Dev.to format: This step will run the python script that will convert the markdown file to the DEV.TO format.
-  e. Publish or Update to Dev.to: This step will publish or update the article on DEV.TO.
-    - It uses the DEVTO_API_KEY stored as a GitHub secret for authentication.
-    - Determines whether to create or update based on the 'action' field in the JSON.
-    - Sends a POST request to create a new article or a PUT request to update an existing one.
-    - Checks the response status code to ensure the operation was successful.
+1. Triggers when there's a push to the main branch that modifies files in the `posts/ directory`
+2. Sets up the environment:
+  - Runs on `ubuntu-latest`
+  - Checks out the repository
+  - Configures Python `3.11`
+  - Installs required dependencies `pyyaml` and `requests`
+3. Performs API key validation by checking its presence and length
+4. Executes the publishing process:
+  - Converts markdown files to Dev.to format using a Python script
+  - Generates a formatted JSON article output
+5. Handles article publication:
+  - Determines whether to create new or update existing article
+  - Makes appropriate API calls to Dev.to - `POST` for new, `PUT` for updates)
+  - Includes proper headers and authentication using DEVTO_API_KEY
+6. Includes error handling:
+  - Validates HTTP response codes
+  - Exits with failure if status code isn't `200` or `201`
+  - Provides detailed error output for troubleshooting1
 
-The workflow automates the process of publishing or updating articles on Dev.to ONLY when changes are made to markdown files in the 'posts' directory. It handles the conversion of markdown to the required format and manages the API interaction with Dev.to, including error handling for failed requests
+## The python script
 
-So far, you have:
+This Python script handles the conversion and publishing of markdown files to Dev.to. Here's a breakdown of its main components. The script's main purpose is to convert markdown files to Dev.to API format and verify existing articles1
 
-* Fetched your DEV.TO API key
-* Saved it as a secret in your GitHub repository
-* Created a new file in your repository .github/workflows/devto_publish.yml
-* Added the code above to the repository
+### extract_front_matter Function
+1. Takes a markdown file path as input and returns:
+  - A dictionary containing parsed YAML front matter data
+  - The markdown body content without the front matter1
+2. Handles errors for:
+  - Missing files
+  - Invalid YAML parsing1
+### md_to_devto Function
+3. Accepts:
+  - Markdown file path
+  - Dev.to API key
+  - Returns:
+    - JSON string of the article
+    - Action string ('create' or 'update')1
+4. Key operations:
+  - Extracts front matter and body
+  - Validates required fields (title, tags)
+  - Checks for existing articles
+  - Prepares article JSON with title, published status, content, and tags1
+### fetch_existing_articles Function
+5. Takes API key as input
+  - Returns list of existing articles from Dev.to
+  - Raises HTTP errors for failed requests1
+6. Main Execution
+  - Validates:
+    - Command line arguments
+    - API key presence
+  Outputs:
+    - Formatted JSON result with article data and action
+    - Error messages to stderr on failure
 
-We now have to write the python script that will convert the markdown file to the DEV.TO format. You can find the script [here](https://github.com/AlexAntartico/devto-publish-test/blob/main/publish_script.py).
+## Conclusion
 
-I have explained what the action does and how it works.
-TO DO: 
-- explain the python script and how to set up env variables.
-- fix broken image links in devto (they are working in github)
-- modify explanation
+The script and GitHub action provided in this article can help you automate the process of uploading markdown files to Dev.to. However, needs to be modified to incorporate more of the error handling in Pyton and create a more robust and maintainable solution. I hope this article helps you in your journey to automate your workflow and make your life easier.
 
-To finalize this article, commit and push the changes to your repository, the action will run automatically and if everything is set up correctly; you will see your markdown file uploaded to DEV.TO.
+I will create an updated version of this scripts with a new article in the future, so stay tuned for that.
 
 Cheers and happy, happy coding!
 

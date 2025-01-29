@@ -132,14 +132,14 @@ jobs:
 
 This Python script handles the conversion and publishing of markdown files to Dev.to. Here's a breakdown of its main components. The script's main purpose is to convert markdown files to Dev.to API format and verify existing articles1
 
-### extract_front_matter Function
+**extract_front_matter Function**
 1. Takes a markdown file path as input and returns:
   - A dictionary containing parsed YAML front matter data
   - The markdown body content without the front matter1
 2. Handles errors for:
   - Missing files
   - Invalid YAML parsing1
-### md_to_devto Function
+**md_to_devto Function**
 3. Accepts:
   - Markdown file path
   - Dev.to API key
@@ -151,7 +151,7 @@ This Python script handles the conversion and publishing of markdown files to De
   - Validates required fields (title, tags)
   - Checks for existing articles
   - Prepares article JSON with title, published status, content, and tags1
-### fetch_existing_articles Function
+**fetch_existing_articles Function**
 5. Takes API key as input
   - Returns list of existing articles from Dev.to
   - Raises HTTP errors for failed requests1

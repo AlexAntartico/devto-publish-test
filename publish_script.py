@@ -130,7 +130,11 @@ if __name__ == "__main__":
 
     try:
         formatted_article, action = md_to_devto(md_file, api_key)
-        print(json.dumps({"article": formatted_article, "action": action}))
+        result = {
+            "article": json.loads(formatted_article),
+            "action": action
+        }
+        print(json.dumps(result))
     except Exception as e:
         print(f"Error: {str(e)}", file=sys.stderr)
         sys.exit(1)

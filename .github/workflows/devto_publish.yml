@@ -41,16 +41,25 @@ jobs:
       env:
         DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
       run: |
+        # Debug: Print JSON structure (minus sensitive data)
+        echo "Action value:"
+        jq -r '.action' formatted_article.json
+
+        echo "Article structure:"
+        jq -r '.article' formatted_article.json | jq 'del(.body_markdown)'
+
         action=$(jq -r '.action' formatted_article.json)
         article=$(jq -r '.article' formatted_article.json)
 
         if [ "$action" = "create" ]; then
+          echo "Creating article..."
           response=$(curl -X POST "https://dev.to/api/articles" \
             -H "api-key: $DEVTO_API_KEY" \
             -H "Content-Type: application/json" \
             -d "$article" -w "\n%{http_code}")
         elif [ "$action" = "update" ]; then
           article_id=$(echo $article | jq -r '.id')
+          echo "Attempting to update article with ID: $article_id"
           response=$(curl -X PUT "https://dev.to/api/articles/$article_id" \
             -H "api-key: $DEVTO_API_KEY" \
             -H "Content-Type: application/json" \
@@ -60,9 +69,14 @@ jobs:
           exit 1
         fi
           
+        echo "Response:"
+        echo "$response" | head -n -1
+
         status_code=$(echo "$response" | tail -n1)
         if [ "$status_code" -ne 200 ] && [ "$status_code" -ne 201 ]; then
           echo "Failed to update article. Status code: $status_code"
+          echo "Full response:"
+          echo "$response"
           exit 1
         fi
 

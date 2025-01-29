@@ -26,7 +26,7 @@ jobs:
 
     - name: Verify API Key Availability
       env:
-        DEVTO_API_KEY: ${{ secrets.DEVTO_TOKEN }}  # Keep existing secret mapping
+        DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}  # Keep existing secret mapping
       run: |
         echo "API key character count: ${#DEVTO_API_KEY}"
         echo "API key empty check: $([ -z "$DEVTO_API_KEY" ] && echo 'Empty' || echo 'Set')"

@@ -138,6 +138,6 @@ TO DO: explain the python script and how to set up env variables.
 
 To finalize this article, commit and push the changes to your repository, the action will run automatically and if everything is set up correctly; you will see your markdown file uploaded to DEV.TO.
 
-Cheers and happy coding!
+Cheers and happy, happy coding!
 
 Eduardo Mendoza

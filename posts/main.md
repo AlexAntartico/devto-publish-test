@@ -29,11 +29,11 @@ I did some quick research and initially decided to use this [Publish to dev.to](
 
 First, fetch your DEV.TO API key. For this, log in to your DEV.TO account and go to settings/extensions, scroll all the way to the bottom and in you will see a section Named "DEV Community API Keys". Name your project and click on "Generate API Key". Copy this key and save it in your GitHub repository secrets.
 
-![Dev.to API Key](../images/Screenshot-2025-01-13-3.png)
+![Dev.to API Key](https://github.com/AlexAntartico/devto-publish-test/blob/main/images/Screenshot-2025-01-13-3.png?raw=true)
 
 To save the key as a secret. go to your repository settings, click on secrets, and add a new secret with the name `DEVTO_TOKEN` and paste the key you copied from DEV.TO. Ensure you have saved at repository level.
 
-![Repository Settings](../images/Screenshot-2025-01-13.png)
+![Repository Settings](https://github.com/AlexAntartico/devto-publish-test/blob/main/images/Screenshot-2025-01-13.png?raw=true)
 
 ![Add Secret](https://github.com/AlexAntartico/devto-publish-test/blob/main/images/Screenshot-2025-01-13-2.png?raw=true)
 

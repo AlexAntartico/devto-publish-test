@@ -11,7 +11,7 @@ published: true
 
 # How to upload Markdown files to Dev.to from GitHub
 
-his is a test post to show how to upload Markdown files to Dev.to.
+This is a test post to show how to upload Markdown files to Dev.to.
 
 You can do this with:
 - GitHub actions

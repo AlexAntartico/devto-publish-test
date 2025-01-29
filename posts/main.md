@@ -35,7 +35,7 @@ To save the key as a secret. go to your repository settings, click on secrets, a
 
 ![Repository Settings](../images/Screenshot-2025-01-13.png)
 
-![Add Secret](../images/Screenshot-2025-01-13-2.png)
+![Add Secret](https://github.com/AlexAntartico/devto-publish-test/blob/main/images/Screenshot-2025-01-13-2.png?raw=true)
 
 In your repository, create a new file called `.github/workflows/devto_publish.yml` and add the following code that you can [find here.](https://github.com/AlexAntartico/devto-publish-test/blob/main/.github/workflows/devto_publish.yml)
 
@@ -46,22 +46,20 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
+    paths:
+      - 'posts/**'
 
 jobs:
   publish:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
-        python-version: '3.10.13'
+        python-version: '3.11'
 
     - name: Upgrade pip and Install dependencies
       run: |
@@ -72,15 +70,52 @@ jobs:
       run: |
         python publish_script.py ./posts/main.md > formatted_article.json
 
-    - name: Publish to Dev.to
+    - name: Publish or Update to Dev.to
       env:
         DEVTO_API_KEY: ${{ secrets.DEVTO_TOKEN }}
       run: |
-        curl -X POST "https://dev.to/api/articles" \
-        -H "api-key: $DEVTO_TOKEN" \
-        -H "Content-Type: application/json" \
-        -d @formatted_article.json
+        action=$(jq -r '.action' formatted_article.json)
+        article=$(jq -r '.article' formatted_article.json)
+
+        if [ "$action" = "create" ]; then
+          response=$(curl -X POST "https://dev.to/api/articles" \
+            -H "api-key: $DEVTO_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "$article" -w "\n%{http_code}")
+        elif [ "$action" = "update" ]; then
+          article_id=$(echo $article | jq -r '.id')
+          response=$(curl -X PUT "https://dev.to/api/articles/$article_id" \
+            -H "api-key: $DEVTO_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "$article" -w "\n%{http_code}")
+        else
+          echo "Invalid action: $action"
+          exit 1
+        fi
+          
+        status_code=$(echo "$response" | tail -n1)
+        if [ "$status_code" -ne 200 ] && [ "$status_code" -ne 201 ]; then
+          echo "Failed to update article. Status code: $status_code"
+          exit 1
+        fi
 ```
+
+## Brief explanation of GitHub action
+
+1. Trigger: The action will run every time you push a commit to the main branch and only if the changes are in the `posts` directory.
+2. Jobs: The action has only one job called `publish`. This job will run on the latest Ubuntu environment available.
+3. Steps: The job has several steps that will be executed in order.
+  a. Checkout repository: This step will checkout the repository to the runner.
+  b. Set up Python: This step will set up Python on the runner.
+  c. Upgrade pip and Install dependencies: This step will upgrade pip and install the dependencies needed to run the python script.
+  d. Convert md to Dev.to format: This step will run the python script that will convert the markdown file to the DEV.TO format.
+  e. Publish or Update to Dev.to: This step will publish or update the article on DEV.TO.
+    - It uses the DEVTO_API_KEY stored as a GitHub secret for authentication.
+    - Determines whether to create or update based on the 'action' field in the JSON.
+    - Sends a POST request to create a new article or a PUT request to update an existing one.
+    - Checks the response status code to ensure the operation was successful.
+
+The workflow automates the process of publishing or updating articles on Dev.to ONLY when changes are made to markdown files in the 'posts' directory. It handles the conversion of markdown to the required format and manages the API interaction with Dev.to, including error handling for failed requests
 
 So far, you have:
 

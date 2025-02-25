@@ -1,17 +1,21 @@
-"""This script converts a markdown file to the format expected by the dev.to API and verifies if an article with the same title already exists.
+"""
+This script converts a markdown file to the format expected by the dev.to API and verifies if an article with the same title already exists.
 
 Functions:
     extract_front_matter(md_file):
-    
+        Extracts front matter from a markdown file.
+        
     md_to_devto(md_file, api_key):
-    
+        Converts a markdown file to the format expected by the dev.to API and verifies if an article with the same title already exists.
+        
     fetch_existing_articles(api_key):
+        Fetches existing articles from the dev.to API.
 
 Usage:
     python publish_script.py <path_to_markdown_file>
 
 Environment Variables:
-    DEVTO_TOKEN: The API key for authentication with the dev.to API.
+    DEVTO_API_KEY: The API key for authentication with the dev.to API.
 """
 import json
 import re
@@ -61,7 +65,9 @@ def md_to_devto(md_file, api_key):
         api_key (str): API key for authentication with the dev.to API.
 
     Returns:
-        tuple: A tuple containing the JSON string of the article and a string indicating whether the article should be 'create' or 'update'.
+        tuple: A tuple containing two elements:
+            - str: The JSON string of the article.
+            - str: A string indicating whether the article should be 'create' or 'update'.
 
     Raises:
         ValueError: If required keys ('title', 'tags') are missing in the front matter of the markdown file.
@@ -114,9 +120,9 @@ def fetch_existing_articles(api_key):
 
 
 if __name__ == "__main__":
-    '''
-    Will verify if arguments passed are correct and call the md_to_devto function
-    '''
+    """
+    Verifies if the correct number of arguments are passed and calls the md_to_devto function.
+    """
     if len(sys.argv) != 2:
         print("Usage: python publish_script.py <path_to_markdown_file>")
         sys.exit(1)
@@ -134,8 +140,7 @@ if __name__ == "__main__":
             "article": json.loads(formatted_article),
             "action": action
         }
-        print(json.dumps(result))
+        print(json.dumps(result, indent=4))
     except Exception as e:
         print(f"Error: {str(e)}", file=sys.stderr)
         sys.exit(1)
-
